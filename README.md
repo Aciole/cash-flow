@@ -14,30 +14,7 @@ diário consolidado.
 
 ## Estrutura do Projeto
 
-├── src
-│   ├── Application                 # Camada de Aplicação
-│   │   ├── Commands                # Definição dos comandos
-│   │   └── CoR                     # Chain of Responsability
-│   │   └── Queiries                # Definição das Consultas
-│   │   └── UseCases                # Casos de uso da aplicação
-│   ├── Domain                      # Camada de Domínio
-│   │   ├── Entities                # Entidades do domínio
-│   │   ├── Repositories            # Interfaces e implementações de repositórios
-│   │   └── Services                # Serviços do domínio
-│   ├── Infrastructure              # Camada de Infraestrutura
-│   │   ├── Persistence             # Implementação dos repositórios usando MongoDB
-│   │   └── Logging                 # Configuração do ELK (Elasticsearch, Logstash, Kibana)│   ├── Infrastructure              # Camada de Infraestrutura
-│   ├── Presentation                # Camada de Apresentação, ou exposição do Serviço
-│   │   ├── Configurations          # Configurações
-│   │   └── Controllers             # Configuração do ELK (Elasticsearch, Logstash, Kibana)
-│   │   └── Models                  # Dtos de respostas para a API
-│   └── Tests                       # Testes unitários
-│       ├── Application             # Testes da camada de Aplicação
-│       ├── Domain                  # Testes da camada de Domínio
-│       └── Infrastructure          # Testes da camada de Infraestrutura
-│       └── Apresentaçao          # Testes da camada de Apresentaçao
-├── docker-compose.yml              # Arquivo de configuração do Docker Compose
-└── README.md                       # Documentação do projeto
+![Estrutura](https://raw.githubusercontent.com/Aciole/cash-flow/main/img/folders.png) 
 
 Tecnologias Utilizadas
 
