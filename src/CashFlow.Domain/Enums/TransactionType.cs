@@ -1,0 +1,1 @@
+namespace CashFlow.Domain.Enums;
