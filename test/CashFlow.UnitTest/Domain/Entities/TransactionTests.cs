@@ -196,7 +196,7 @@ public class TransactionTests
         var formattedAmount = transaction.GetFormattedAmount();
 
         // Assert
-        Assert.Equal("100,50", formattedAmount);
+        Assert.Equal("100.50", formattedAmount);
     }
 
     [Fact]

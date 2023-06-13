@@ -1,3 +1,4 @@
+using System.Globalization;
 using CashFlow.Domain.ValueObjects;
 
 namespace CashFlow.Domain.Entities;
@@ -18,16 +19,16 @@ public class Transaction
         Timestamp = DateTime.UtcNow;
         Type = type;
     }
-    
+
     protected Transaction()
     {
     }
-    
+
     public Guid Id { get; protected set; }
-    public Guid CashFlowId { get; protected set;}
-    public Money AmountVO { get; protected set;}
+    public Guid CashFlowId { get; protected set; }
+    public Money AmountVO { get; protected set; }
     public DateTime Timestamp { get; protected set; }
-    public TransactionType Type { get; protected set;}
+    public TransactionType Type { get; protected set; }
 
     public Transaction WithAmount(decimal amount)
     {
@@ -51,7 +52,7 @@ public class Transaction
 
     public string GetFormattedAmount()
     {
-        return AmountVO.Amount.ToString();
+        return AmountVO.Amount.ToString(CultureInfo.InvariantCulture);
     }
 
     public bool IsPositiveAmount()
@@ -63,7 +64,7 @@ public class Transaction
     {
         return AmountVO.Amount < 0;
     }
-    
+
     public bool IsSameTransaction(Transaction other)
     {
         return Id == other.Id;

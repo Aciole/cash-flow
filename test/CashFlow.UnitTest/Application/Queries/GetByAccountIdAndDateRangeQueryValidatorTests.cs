@@ -33,7 +33,7 @@ public class GetByAccountIdAndDateRangeQueryValidatorTests
 
         Assert.False(validate.IsValid);
     }
-    
+
     [Fact]
     public void Validate_ReturnError2()
     {
@@ -43,7 +43,7 @@ public class GetByAccountIdAndDateRangeQueryValidatorTests
             PageSize = -50,
             PageNumber = 0,
             EndDate = DateOnly.FromDateTime(DateTime.UtcNow.Date.AddDays(-1)),
-            StartDate= DateOnly.FromDateTime(DateTime.UtcNow.Date)
+            StartDate = DateOnly.FromDateTime(DateTime.UtcNow.Date)
         });
 
         Assert.False(validate.IsValid);

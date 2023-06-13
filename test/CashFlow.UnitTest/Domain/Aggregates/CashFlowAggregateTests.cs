@@ -4,10 +4,9 @@ namespace CashFlow.UnitTest.Domain.Aggregates;
 
 public class CashFlowAggregateTests
 {
-
     private readonly CashFlowDailyAggregate _dailyAggregate = new(Guid.NewGuid(), Guid.NewGuid(),
         DateOnly.FromDateTime(DateTime.UtcNow.Date));
-    
+
     [Fact]
     public void AddTransaction_ValidTransaction_AddsTransactionAndEvent()
     {
@@ -29,13 +28,13 @@ public class CashFlowAggregateTests
     public void GetBalance_WithTransactions_ReturnsCorrectBalance()
     {
         // Arrange
-    
+
         var transactions = new List<Transaction>
         {
             new(_dailyAggregate.Id, 100, TransactionType.Credit),
             new(_dailyAggregate.Id, 50, TransactionType.Debit)
         };
-        
+
         transactions.ForEach(t => _dailyAggregate.AddTransaction(t));
 
         // Act
@@ -56,15 +55,14 @@ public class CashFlowAggregateTests
         var transaction = new Transaction(_dailyAggregate.Id, 100, TransactionType.Credit);
         var transaction1 = new Transaction(_dailyAggregate.Id, 50, TransactionType.Debit);
         var transaction2 = new Transaction(_dailyAggregate.Id, 75, TransactionType.Credit);
-        
+
         var transactions = new List<Transaction>
         {
-          
             transaction.WithTimestamp(new DateTime(2023, 2, 15)),
             transaction1.WithTimestamp(new DateTime(2022, 6, 30)),
-            transaction2.WithTimestamp(new DateTime(2023, 12, 1)),
+            transaction2.WithTimestamp(new DateTime(2023, 12, 1))
         };
-        
+
         transactions.ForEach(t => _dailyAggregate.AddTransaction(t));
 
         // Act
@@ -87,7 +85,7 @@ public class CashFlowAggregateTests
             new(_dailyAggregate.Id, 75, TransactionType.Debit)
         };
 
-    
+
         transactions.ForEach(t => _dailyAggregate.AddTransaction(t));
 
         // Act
@@ -107,7 +105,7 @@ public class CashFlowAggregateTests
             new(_dailyAggregate.Id, 50, TransactionType.Debit),
             new(_dailyAggregate.Id, 75, TransactionType.Debit)
         };
-        
+
         transactions.ForEach(t => _dailyAggregate.AddTransaction(t));
 
         // Act
@@ -146,7 +144,7 @@ public class CashFlowAggregateTests
         var transactionType = TransactionType.Credit;
 
         var transaction = new Transaction(_dailyAggregate.Id, amount.Amount, transactionType);
-        
+
         _dailyAggregate.AddTransaction(transaction);
 
         // Act
@@ -167,7 +165,7 @@ public class CashFlowAggregateTests
 
         var transaction = new Transaction(_dailyAggregate.Id, amount.Amount, transactionType)
             ;
-        
+
         _dailyAggregate.AddTransaction(transaction);
 
         // Act

@@ -17,9 +17,9 @@ public class CashFlowService : ICashFlowService
     public async Task<CashFlowDailyAggregate?> RegisterNewAggregate(Guid accountId)
     {
         var cashFlow = await _cashFlowRepository.GetCurrentCashByAccountId(accountId);
-        
+
         await _cashFlowRepository.Save(cashFlow!);
-        
+
         return cashFlow;
     }
 

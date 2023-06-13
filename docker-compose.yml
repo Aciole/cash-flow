@@ -1,22 +1,22 @@
 ﻿version: '3.8'
 
 services:
-#  cashflow.api:
-#    image: cashflow.api
-#    build:
-#      context: .
-#      dockerfile: src/CashFlow.API/Dockerfile
-#    depends_on:
-#      - mysql
-#      - elasticsearch
-#    ports:
-#      - 57015:57015
+  #  cashflow.api:
+  #    image: cashflow.api
+  #    build:
+  #      context: .
+  #      dockerfile: src/CashFlow.API/Dockerfile
+  #    depends_on:
+  #      - mysql
+  #      - elasticsearch
+  #    ports:
+  #      - 57015:57015
   mongodb:
     image: mongo
     container_name: mongodb
     ports:
       - 27017:27017
-       
+  
   mongo-express:
     image: mongo-express
     container_name: mongo-express
@@ -30,7 +30,7 @@ services:
       ME_CONFIG_MONGODB_URL: mongodb://mongodb:27017/
     depends_on:
       - mongodb
-        
+  
   elasticsearch:
     image: docker.elastic.co/elasticsearch/elasticsearch:7.15.0
     container_name: elasticsearch

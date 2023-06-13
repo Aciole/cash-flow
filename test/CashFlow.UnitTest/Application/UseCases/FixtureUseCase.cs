@@ -1,4 +1,3 @@
-using CashFlow.Application.UseCases;
 using Microsoft.Extensions.Logging;
 
 namespace CashFlow.UnitTest.Application.UseCases;
@@ -6,7 +5,7 @@ namespace CashFlow.UnitTest.Application.UseCases;
 public class FixtureUseCase<TUseCase>
 {
     protected readonly Mock<ILogger<TUseCase>> _logger = new();
-    
+
     protected void LoggerVerify(LogLevel logLevel, string logMessage)
     {
         _logger.Verify(

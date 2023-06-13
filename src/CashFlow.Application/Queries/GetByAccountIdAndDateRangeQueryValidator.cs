@@ -10,15 +10,15 @@ public class GetByAccountIdAndDateRangeQueryValidator : AbstractValidator<GetByA
 
         RuleFor(command => command.StartDate)
             .GreaterThan(new DateOnly(2023, 6, 1));
-        
+
         RuleFor(command => command.EndDate)
             .Must((dateRange, endDate) => endDate >= dateRange.StartDate)
             .WithMessage("EndDate cannot be earlier than StartDate.");
-        
+
         RuleFor(command => command.PageSize)
             .NotEmpty()
             .GreaterThan(0);
-        
+
         RuleFor(command => command.PageNumber)
             .NotEmpty()
             .GreaterThan(0);

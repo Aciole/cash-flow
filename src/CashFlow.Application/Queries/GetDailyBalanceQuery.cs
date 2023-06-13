@@ -3,7 +3,6 @@ using MediatR;
 
 namespace CashFlow.Application.Queries;
 
-public class GetDailyBalanceQuery: CashFlowDailyCommand, IRequest<CommandResponse<GetDailyBalanceQueryResponse>>
+public class GetDailyBalanceQuery : CashFlowDailyCommand, IRequest<CommandResponse<GetDailyBalanceQueryResponse>>
 {
-    
 }

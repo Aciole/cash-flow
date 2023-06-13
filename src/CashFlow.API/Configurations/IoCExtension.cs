@@ -26,7 +26,6 @@ public static class IoCExtension
 
     private static IServiceCollection AddInfrastructure(this IServiceCollection services)
     {
-      
         services.AddTransient<ICashFlowRepository, MongoCashFlowRepository>();
 
         return services;
@@ -42,34 +41,43 @@ public static class IoCExtension
     private static IServiceCollection Application(this IServiceCollection services)
     {
         services.AddMediatR(cfg => cfg.RegisterServicesFromAssemblies(Assembly.GetExecutingAssembly()));
-        
+
         services
             .AddSingleton<IValidator<AddTransactionDailyCommand>, AddTransactionCommandValidator>()
-            .AddSingleton<IPipelineBehavior<RegisterNewCashFlowCommand,CommandResponse<Guid>>, ValidateCommandCoR<RegisterNewCashFlowCommand,Guid>>()
+            .AddSingleton<IPipelineBehavior<RegisterNewCashFlowCommand, CommandResponse<Guid>>,
+                ValidateCommandCoR<RegisterNewCashFlowCommand, Guid>>()
             .AddTransient<IRequestHandler<AddTransactionDailyCommand, CommandResponse<Guid>>, AddTransactionUseCase>();
 
 
         services
             .AddSingleton<IValidator<CancelTransactionCommand>, CancelTransactionCommandValidator>()
-            .AddSingleton<IPipelineBehavior<CancelTransactionCommand,CommandResponse<Guid>>, ValidateCommandCoR<CancelTransactionCommand,Guid>>()
+            .AddSingleton<IPipelineBehavior<CancelTransactionCommand, CommandResponse<Guid>>,
+                ValidateCommandCoR<CancelTransactionCommand, Guid>>()
             .AddTransient<IRequestHandler<CancelTransactionCommand, CommandResponse<Guid>>, CancelTransactionUseCase>();
-        
+
         services
             .AddSingleton<IValidator<RegisterNewCashFlowCommand>, RegisterNewCashFlowCommandValidator>()
-            .AddSingleton<IPipelineBehavior<RegisterNewCashFlowCommand,CommandResponse<Guid>>, ValidateCommandCoR<RegisterNewCashFlowCommand,Guid>>()
-            .AddTransient<IRequestHandler<RegisterNewCashFlowCommand, CommandResponse<Guid>>, RegisterNewCashFlowUseCase>();
+            .AddSingleton<IPipelineBehavior<RegisterNewCashFlowCommand, CommandResponse<Guid>>,
+                ValidateCommandCoR<RegisterNewCashFlowCommand, Guid>>()
+            .AddTransient<IRequestHandler<RegisterNewCashFlowCommand, CommandResponse<Guid>>,
+                RegisterNewCashFlowUseCase>();
 
 
         services
             .AddSingleton<IValidator<GetDailyBalanceQuery>, GetDailyBalanceQueryValidator>()
-            .AddSingleton<IPipelineBehavior<GetDailyBalanceQuery,CommandResponse<GetDailyBalanceQueryResponse>>, ValidateCommandCoR<GetDailyBalanceQuery,GetDailyBalanceQueryResponse>>()
+            .AddSingleton<IPipelineBehavior<GetDailyBalanceQuery, CommandResponse<GetDailyBalanceQueryResponse>>,
+                ValidateCommandCoR<GetDailyBalanceQuery, GetDailyBalanceQueryResponse>>()
             .AddTransient<IRequestHandler<GetDailyBalanceQuery, CommandResponse<GetDailyBalanceQueryResponse>>,
                 GetDailyBalanceUseCase>();
-        
+
         services
             .AddSingleton<IValidator<GetByAccountIdAndDateRangeQuery>, GetByAccountIdAndDateRangeQueryValidator>()
-            .AddSingleton<IPipelineBehavior<GetByAccountIdAndDateRangeQuery,CommandResponse<GetByAccountIdAndDateRangeQueryResponse>>, ValidateCommandCoR<GetByAccountIdAndDateRangeQuery,GetByAccountIdAndDateRangeQueryResponse>>()
-            .AddTransient<IRequestHandler<GetByAccountIdAndDateRangeQuery, CommandResponse<GetByAccountIdAndDateRangeQueryResponse>>,
+            .AddSingleton<
+                IPipelineBehavior<GetByAccountIdAndDateRangeQuery,
+                    CommandResponse<GetByAccountIdAndDateRangeQueryResponse>>, ValidateCommandCoR<
+                    GetByAccountIdAndDateRangeQuery, GetByAccountIdAndDateRangeQueryResponse>>()
+            .AddTransient<IRequestHandler<GetByAccountIdAndDateRangeQuery,
+                    CommandResponse<GetByAccountIdAndDateRangeQueryResponse>>,
                 GetByAccountIdAndDateRangeUseCase>();
 
         return services;

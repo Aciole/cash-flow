@@ -12,13 +12,13 @@ public class ValidateCommandCoRTests
     private readonly Mock<RequestHandlerDelegate<CommandResponse<Guid>>> _delegate =
         new();
 
+    private readonly ValidateCommandCoR<AddTransactionDailyCommand, Guid> _validateCommandChain;
+
     private readonly IEnumerable<IValidator<AddTransactionDailyCommand>> _validators =
         new List<IValidator<AddTransactionDailyCommand>>
         {
             new AddTransactionCommandValidator()
         };
-
-    private readonly ValidateCommandCoR<AddTransactionDailyCommand, Guid> _validateCommandChain;
 
     public ValidateCommandCoRTests()
     {

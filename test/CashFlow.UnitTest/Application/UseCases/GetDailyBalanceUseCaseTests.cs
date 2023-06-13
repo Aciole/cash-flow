@@ -20,7 +20,8 @@ public class GetDailyBalanceUseCaseTests : FixtureUseCase<GetDailyBalanceUseCase
     {
         // Arrange
         var accountId = Guid.NewGuid();
-        var cashFlow = new CashFlowDailyAggregate(Guid.NewGuid(), accountId, DateOnly.FromDateTime(DateTime.UtcNow.Date));
+        var cashFlow =
+            new CashFlowDailyAggregate(Guid.NewGuid(), accountId, DateOnly.FromDateTime(DateTime.UtcNow.Date));
         cashFlow.AddTransaction(new Transaction(cashFlow.Id, 100, TransactionType.Credit));
         cashFlow.AddTransaction(new Transaction(cashFlow.Id, 50, TransactionType.Debit));
 
@@ -51,7 +52,7 @@ public class GetDailyBalanceUseCaseTests : FixtureUseCase<GetDailyBalanceUseCase
         Assert.Equal(cashFlow.Transactions.Last().Id, transactionDto2.Id);
         Assert.Equal(cashFlow.Transactions.Last().AmountVO.Amount, transactionDto2.AmountVO.Amount);
         Assert.Equal(cashFlow.Transactions.Last().Type, transactionDto2.Type);
-        
+
         LoggerVerify(LogLevel.Information, "was found.");
     }
 
@@ -77,7 +78,7 @@ public class GetDailyBalanceUseCaseTests : FixtureUseCase<GetDailyBalanceUseCase
         Assert.False(isSuccess);
         Assert.Null(response);
         Assert.Equal(CashFlowNotFound, error!.ErrorCode);
-        
+
         LoggerVerify(LogLevel.Error, "not found.");
     }
 }

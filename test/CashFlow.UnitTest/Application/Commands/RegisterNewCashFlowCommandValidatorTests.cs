@@ -5,8 +5,8 @@ namespace CashFlow.UnitTest.Application.Commands;
 public class RegisterNewCashFlowCommandValidatorTests
 {
     private readonly RegisterNewCashFlowCommandValidator _validator;
-    
-    
+
+
     public RegisterNewCashFlowCommandValidatorTests()
     {
         _validator = new RegisterNewCashFlowCommandValidator();

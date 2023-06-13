@@ -11,7 +11,7 @@ public class CashFlowDailyAggregate
         Date = date;
         Transactions = new List<Transaction?>();
     }
-    
+
     public CashFlowDailyAggregate(Guid id, Guid accountId, DateOnly date, decimal initialBalance)
     {
         Id = id;
@@ -28,8 +28,8 @@ public class CashFlowDailyAggregate
     public Guid Id { get; protected set; }
 
     public List<Transaction?> Transactions { get; protected set; }
-    
-    
+
+
     public decimal InitialBalance { get; protected set; } // D -1
     public decimal CurrentBalance => InitialBalance + GetBalance();
     public DateOnly Date { get; set; }
@@ -44,10 +44,10 @@ public class CashFlowDailyAggregate
     {
         decimal balance = 0;
         foreach (var transaction in Transactions)
-            if (transaction.Type == TransactionType.Credit)
-                balance += transaction!.AmountVO.Amount;
+            if (transaction!.Type == TransactionType.Credit)
+                balance += transaction.AmountVO.Amount;
             else
-                balance -= transaction!.AmountVO.Amount;
+                balance -= transaction.AmountVO.Amount;
         return balance;
     }
 

@@ -24,7 +24,7 @@ public class CancelTransactionUseCaseTests : FixtureUseCase<CancelTransactionUse
         var transactionId = Guid.NewGuid();
 
         _service.Setup(service => service.ReverseTransaction(transactionId))
-            .ReturnsAsync(new Transaction(Guid.NewGuid(), 100M,  TransactionType.Credit));
+            .ReturnsAsync(new Transaction(Guid.NewGuid(), 100M, TransactionType.Credit));
 
         var command = new CancelTransactionCommand
         {
@@ -38,9 +38,9 @@ public class CancelTransactionUseCaseTests : FixtureUseCase<CancelTransactionUse
         Assert.True(isSuccess);
         Assert.Null(error);
         Assert.NotEqual(default, response);
-        
+
         _service.Verify(service => service.ReverseTransaction(transactionId), Times.Once);
-        
+
         LoggerVerify(LogLevel.Information, "was successfully canceled or reversed.");
     }
 
@@ -66,7 +66,7 @@ public class CancelTransactionUseCaseTests : FixtureUseCase<CancelTransactionUse
         Assert.Equal(TransactionNotFound, error.ErrorCode);
         Assert.Equal(default, response);
         _service.Verify(service => service.ReverseTransaction(transactionId), Times.Once);
-        
+
         LoggerVerify(LogLevel.Error, "cannot be canceled or reversed");
     }
 
@@ -93,7 +93,7 @@ public class CancelTransactionUseCaseTests : FixtureUseCase<CancelTransactionUse
         Assert.Equal(TransactionNotFound, error.ErrorCode);
         Assert.Equal(default, response);
         _service.Verify(service => service.ReverseTransaction(transactionId), Times.Once);
-        
+
         LoggerVerify(LogLevel.Error, "Transaction not found.");
     }
 

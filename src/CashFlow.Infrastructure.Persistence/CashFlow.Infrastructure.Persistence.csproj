@@ -8,11 +8,11 @@
     </PropertyGroup>
 
     <ItemGroup>
-        <ProjectReference Include="..\CashFlow.Domain\CashFlow.Domain.csproj" />
+        <ProjectReference Include="..\CashFlow.Domain\CashFlow.Domain.csproj"/>
     </ItemGroup>
 
     <ItemGroup>
-      <PackageReference Include="MongoDB.Driver" Version="2.19.2" />
+        <PackageReference Include="MongoDB.Driver" Version="2.19.2"/>
     </ItemGroup>
 
 </Project>

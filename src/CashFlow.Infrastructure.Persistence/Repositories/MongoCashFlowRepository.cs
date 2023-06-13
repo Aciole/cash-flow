@@ -8,11 +8,16 @@ using MongoDB.Driver;
 
 namespace CashFlow.Infrastructure.Persistence.Repositories;
 
-public class MongoCashFlowRepository: ICashFlowRepository
+public class MongoCashFlowRepository : ICashFlowRepository
 {
     private readonly IMongoCollection<CashFlowDailyAggregate> _cashFlowCollection;
 
     private readonly ILogger<MongoCashFlowRepository> _logger;
+
+    static MongoCashFlowRepository()
+    {
+        ConfigureMongoDBMapping();
+    }
 
     public MongoCashFlowRepository(IMongoDatabase database, ILogger<MongoCashFlowRepository> logger)
     {
@@ -22,14 +27,14 @@ public class MongoCashFlowRepository: ICashFlowRepository
 
     public async Task<CashFlowDailyAggregate?> GetCurrentCashByAccountId(Guid accountId)
     {
-        DateOnly today = DateOnly.FromDateTime(DateTime.UtcNow.Date); 
-        
+        var today = DateOnly.FromDateTime(DateTime.UtcNow.Date);
+
         var filterToday = Builders<CashFlowDailyAggregate>.Filter.Eq(f => f.AccountId, accountId) &
-                         Builders<CashFlowDailyAggregate>.Filter.Eq(d => d.Date, today);
+                          Builders<CashFlowDailyAggregate>.Filter.Eq(d => d.Date, today);
 
         var filterLastTransactionDay =
-                Builders<CashFlowDailyAggregate>.Filter.Eq(d => d.AccountId, accountId) &
-                Builders<CashFlowDailyAggregate>.Filter.Gt(d => d.Transactions.Count, 0);
+            Builders<CashFlowDailyAggregate>.Filter.Eq(d => d.AccountId, accountId) &
+            Builders<CashFlowDailyAggregate>.Filter.Gt(d => d.Transactions.Count, 0);
 
         var resultToday = await _cashFlowCollection.Find(filterToday).FirstOrDefaultAsync();
 
@@ -40,38 +45,40 @@ public class MongoCashFlowRepository: ICashFlowRepository
             .FirstOrDefaultAsync();
 
         if (resultLastTransactionDay == null) return null;
-        
+
         return new CashFlowDailyAggregate(Guid.NewGuid(), accountId, today, resultLastTransactionDay.CurrentBalance);
     }
-    
-    public async Task<(List<CashFlowDailyAggregate?> response, long totalItemCount, int totalPages)> GetByAccountIdAndDateRange(Guid accountId, DateOnly startDate, DateOnly endDate, int pageNumber = 1,
-        int pageSize = 50)
+
+    public async Task<(List<CashFlowDailyAggregate?> response, long totalItemCount, int totalPages)>
+        GetByAccountIdAndDateRange(Guid accountId, DateOnly startDate, DateOnly endDate, int pageNumber = 1,
+            int pageSize = 50)
     {
-        int skipCount = (pageNumber - 1) * pageSize;
+        var skipCount = (pageNumber - 1) * pageSize;
 
         var filter = Builders<CashFlowDailyAggregate>.Filter.And(
             Builders<CashFlowDailyAggregate>.Filter.Eq(d => d.AccountId, accountId),
             Builders<CashFlowDailyAggregate>.Filter.Gte(d => d.Date, startDate),
             Builders<CashFlowDailyAggregate>.Filter.Lte(d => d.Date, endDate)
         );
-        
+
         var totalItemCount = await _cashFlowCollection.CountDocumentsAsync(filter);
 
-        int totalPages = (int)Math.Ceiling((double)totalItemCount / pageSize);
+        var totalPages = (int)Math.Ceiling((double)totalItemCount / pageSize);
 
-        
+
         var response = await _cashFlowCollection.Find(filter)
             .SortByDescending(d => d.Date)
             .Skip(skipCount)
             .Limit(pageSize)
             .ToListAsync();
-        
+
         return (response, totalItemCount, totalPages);
     }
 
     public async Task<CashFlowDailyAggregate?> GetByTransactionId(Guid transactionId)
     {
-        var cashFlow = await _cashFlowCollection.Find(cf => cf.Transactions.Any(t => t.Id == transactionId)).FirstOrDefaultAsync();
+        var cashFlow = await _cashFlowCollection.Find(cf => cf.Transactions.Any(t => t.Id == transactionId))
+            .FirstOrDefaultAsync();
         return cashFlow;
     }
 
@@ -80,7 +87,7 @@ public class MongoCashFlowRepository: ICashFlowRepository
         var existingCashFlow = await GetById(cashFlowDaily.Id);
         if (existingCashFlow != null)
             await _cashFlowCollection.ReplaceOneAsync(cf => cf.Id == cashFlowDaily.Id, cashFlowDaily);
-        
+
         else
             await _cashFlowCollection.InsertOneAsync(cashFlowDaily);
     }
@@ -90,18 +97,10 @@ public class MongoCashFlowRepository: ICashFlowRepository
         return await _cashFlowCollection.Find(d => d.Id == cashFlowDailyId)
             .FirstOrDefaultAsync();
     }
-    
-    static MongoCashFlowRepository()
-    {
-        ConfigureMongoDBMapping();
-    }
 
     private static void ConfigureMongoDBMapping()
     {
-        BsonClassMap.RegisterClassMap<Money>(cm =>
-        {
-            cm.MapProperty(m => m.Amount);
-        });
+        BsonClassMap.RegisterClassMap<Money>(cm => { cm.MapProperty(m => m.Amount); });
 
         BsonClassMap.RegisterClassMap<Transaction>(cm =>
         {

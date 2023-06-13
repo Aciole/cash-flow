@@ -45,7 +45,6 @@ internal class RetrieveCashFlowQueryTestData : IEnumerable<object[]>
     {
         return GetEnumerator();
     }
-    
 }
 
 internal class CancelTransactionCommandTestData : IEnumerable<object[]>
@@ -93,8 +92,8 @@ internal class AddTransactionCommandTestData : IEnumerable<object[]>
             Guid.NewGuid(),
             new AddTransactionRequest
             {
-              Amount  = 50M,
-              Type = TransactionType.Credit
+                Amount = 50M,
+                Type = TransactionType.Credit
             },
             CommandResponse<Guid>.CreateFail(ErrorCode.CommandInvalid, "Request inválida"),
             (int)HttpStatusCode.BadRequest
@@ -104,37 +103,36 @@ internal class AddTransactionCommandTestData : IEnumerable<object[]>
             Guid.NewGuid(),
             new AddTransactionRequest
             {
-                Amount  = 50M,
+                Amount = 50M,
                 Type = TransactionType.Credit
             },
             CommandResponse<Guid>.CreateFail(ErrorCode.CashFlowNotFound, "Não encontrado"),
             (int)HttpStatusCode.NotFound
         };
-        
+
         yield return new object[]
         {
             Guid.NewGuid(),
             new AddTransactionRequest
             {
-                Amount  = 50M,
+                Amount = 50M,
                 Type = TransactionType.Credit
             },
             CommandResponse<Guid>.CreateFail(ErrorCode.InternalError, "Internal Server Error"),
             (int)HttpStatusCode.InternalServerError
         };
-        
+
         yield return new object[]
         {
             Guid.NewGuid(),
             new AddTransactionRequest
             {
-                Amount  = 50M,
+                Amount = 50M,
                 Type = TransactionType.Credit
             },
             CommandResponse<Guid>.CreateSuccess(Guid.NewGuid()),
             (int)HttpStatusCode.Created
         };
-        
     }
 
     IEnumerator IEnumerable.GetEnumerator()
@@ -165,7 +163,7 @@ internal class RegisterNewCashFlowCommandTestData : IEnumerable<object[]>
             CommandResponse<Guid>.CreateFail(ErrorCode.InternalError, "Internal Server Error"),
             (int)HttpStatusCode.InternalServerError
         };
-        
+
         yield return new object[]
         {
             new RegisterNewCashFlowRequest
@@ -175,7 +173,6 @@ internal class RegisterNewCashFlowCommandTestData : IEnumerable<object[]>
             CommandResponse<Guid>.CreateSuccess(Guid.NewGuid()),
             (int)HttpStatusCode.Created
         };
-        
     }
 
     IEnumerator IEnumerable.GetEnumerator()
@@ -195,10 +192,11 @@ internal class GetByAccountIdAndDateRangeQueryTestData : IEnumerable<object[]>
             {
                 AccountId = Guid.NewGuid()
             },
-            CommandResponse<GetByAccountIdAndDateRangeQueryResponse>.CreateFail(ErrorCode.CommandInvalid, "Request inválida"),
+            CommandResponse<GetByAccountIdAndDateRangeQueryResponse>.CreateFail(ErrorCode.CommandInvalid,
+                "Request inválida"),
             (int)HttpStatusCode.BadRequest
         };
-        
+
         yield return new object[]
         {
             Guid.NewGuid(),
@@ -206,10 +204,11 @@ internal class GetByAccountIdAndDateRangeQueryTestData : IEnumerable<object[]>
             {
                 AccountId = Guid.NewGuid()
             },
-            CommandResponse<GetByAccountIdAndDateRangeQueryResponse>.CreateFail(ErrorCode.CashFlowNotFound, "Request inválida"),
+            CommandResponse<GetByAccountIdAndDateRangeQueryResponse>.CreateFail(ErrorCode.CashFlowNotFound,
+                "Request inválida"),
             (int)HttpStatusCode.NotFound
         };
-        
+
         yield return new object[]
         {
             Guid.NewGuid(),
@@ -217,10 +216,11 @@ internal class GetByAccountIdAndDateRangeQueryTestData : IEnumerable<object[]>
             {
                 AccountId = Guid.NewGuid()
             },
-            CommandResponse<GetByAccountIdAndDateRangeQueryResponse>.CreateFail(ErrorCode.CommandInvalid, "Request inválida"),
+            CommandResponse<GetByAccountIdAndDateRangeQueryResponse>.CreateFail(ErrorCode.CommandInvalid,
+                "Request inválida"),
             (int)HttpStatusCode.BadRequest
         };
-        
+
         yield return new object[]
         {
             Guid.NewGuid(),
@@ -228,10 +228,11 @@ internal class GetByAccountIdAndDateRangeQueryTestData : IEnumerable<object[]>
             {
                 AccountId = Guid.NewGuid()
             },
-            CommandResponse<GetByAccountIdAndDateRangeQueryResponse>.CreateFail(ErrorCode.InternalError, "Request inválida"),
+            CommandResponse<GetByAccountIdAndDateRangeQueryResponse>.CreateFail(ErrorCode.InternalError,
+                "Request inválida"),
             (int)HttpStatusCode.InternalServerError
         };
-        
+
         yield return new object[]
         {
             Guid.NewGuid(),
@@ -239,7 +240,8 @@ internal class GetByAccountIdAndDateRangeQueryTestData : IEnumerable<object[]>
             {
                 AccountId = Guid.NewGuid()
             },
-            CommandResponse<GetByAccountIdAndDateRangeQueryResponse>.CreateSuccess(new GetByAccountIdAndDateRangeQueryResponse()),
+            CommandResponse<GetByAccountIdAndDateRangeQueryResponse>.CreateSuccess(
+                new GetByAccountIdAndDateRangeQueryResponse()),
             (int)HttpStatusCode.OK
         };
     }

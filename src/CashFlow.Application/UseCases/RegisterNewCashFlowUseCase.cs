@@ -1,20 +1,17 @@
 using CashFlow.Application.Commands;
-using CashFlow.Domain.Aggregates;
-using CashFlow.Domain.Exceptions;
 using CashFlow.Domain.Interfaces;
 using MediatR;
 using Microsoft.Extensions.Logging;
-
 using static CashFlow.Application.ErrorCode;
 
 namespace CashFlow.Application.UseCases;
 
 public class RegisterNewCashFlowUseCase : IRequestHandler<RegisterNewCashFlowCommand, CommandResponse<Guid>>
 {
-    private readonly ICashFlowService _service;
     private readonly ILogger<RegisterNewCashFlowUseCase> _logger;
-    
-    public RegisterNewCashFlowUseCase(ICashFlowService service , ILogger<RegisterNewCashFlowUseCase> logger)
+    private readonly ICashFlowService _service;
+
+    public RegisterNewCashFlowUseCase(ICashFlowService service, ILogger<RegisterNewCashFlowUseCase> logger)
     {
         _logger = logger;
         _service = service;
@@ -25,7 +22,7 @@ public class RegisterNewCashFlowUseCase : IRequestHandler<RegisterNewCashFlowCom
     {
         try
         {
-            var aggregate =  await _service.RegisterNewAggregate(command.AccountId);
+            var aggregate = await _service.RegisterNewAggregate(command.AccountId);
             _logger.LogInformation("CashFlow Id: {0}, registered!", aggregate!.Id);
             return CommandResponse<Guid>.CreateSuccess(aggregate.Id);
         }

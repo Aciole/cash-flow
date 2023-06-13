@@ -5,17 +5,17 @@ namespace CashFlow.UnitTest.Domain.Services;
 
 public class CashFlowServiceTests
 {
-    private readonly CashFlowService _cashFlowService;
-    private readonly Mock<ICashFlowRepository> _mockCashFlowRepository = new();
-    
     private readonly Guid _cashFlowId = Guid.NewGuid();
+    private readonly CashFlowService _cashFlowService;
 
     private readonly CashFlowDailyAggregate _dailyAggregate;
+    private readonly Mock<ICashFlowRepository> _mockCashFlowRepository = new();
 
     public CashFlowServiceTests()
     {
-        _dailyAggregate = new CashFlowDailyAggregate(_cashFlowId, Guid.NewGuid(), DateOnly.FromDateTime(DateTime.UtcNow.Date));
-        
+        _dailyAggregate =
+            new CashFlowDailyAggregate(_cashFlowId, Guid.NewGuid(), DateOnly.FromDateTime(DateTime.UtcNow.Date));
+
         _cashFlowService = new CashFlowService(_mockCashFlowRepository.Object);
     }
 
@@ -24,17 +24,17 @@ public class CashFlowServiceTests
     {
         // Arrange
         var accountId = Guid.NewGuid();
-        
+
         _mockCashFlowRepository.Setup(repository => repository.GetCurrentCashByAccountId(It.IsAny<Guid>()))
             .ReturnsAsync(_dailyAggregate);
-        
+
 
         // Act
         var aggregate = await _cashFlowService.RegisterNewAggregate(accountId);
-        
+
         // Assert
         Assert.NotNull(aggregate);
-        Assert.NotEqual(default(Guid), aggregate.Id);
+        Assert.NotEqual(default, aggregate.Id);
 
         _mockCashFlowRepository.Verify(repository => repository.GetCurrentCashByAccountId(accountId), Times.Once);
         _mockCashFlowRepository.Verify(repository => repository.Save(It.IsAny<CashFlowDailyAggregate>()), Times.Once);
@@ -91,7 +91,7 @@ public class CashFlowServiceTests
     public async Task ReverseTransaction_ValidTransaction_ReturnsReversedTransaction()
     {
         // Arrange
-    
+
         var cashFlow = _dailyAggregate;
         var originalTransaction = new Transaction(_cashFlowId, 100, TransactionType.Debit);
         var transactionId = originalTransaction.Id;

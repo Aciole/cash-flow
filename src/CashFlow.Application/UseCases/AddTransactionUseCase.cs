@@ -18,7 +18,8 @@ public class AddTransactionUseCase : IRequestHandler<AddTransactionDailyCommand,
         _logger = logger;
     }
 
-    public async Task<CommandResponse<Guid>> Handle(AddTransactionDailyCommand dailyCommand, CancellationToken cancellationToken)
+    public async Task<CommandResponse<Guid>> Handle(AddTransactionDailyCommand dailyCommand,
+        CancellationToken cancellationToken)
     {
         try
         {

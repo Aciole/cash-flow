@@ -7,10 +7,11 @@ using static CashFlow.Application.ErrorCode;
 
 namespace CashFlow.Application.UseCases;
 
-public class GetDailyBalanceUseCase : IRequestHandler<GetDailyBalanceQuery, CommandResponse<GetDailyBalanceQueryResponse>>
+public class
+    GetDailyBalanceUseCase : IRequestHandler<GetDailyBalanceQuery, CommandResponse<GetDailyBalanceQueryResponse>>
 {
-    private readonly ICashFlowRepository _repository;
     private readonly ILogger<GetDailyBalanceUseCase> _logger;
+    private readonly ICashFlowRepository _repository;
 
     public GetDailyBalanceUseCase(ICashFlowRepository repository, ILogger<GetDailyBalanceUseCase> logger)
     {

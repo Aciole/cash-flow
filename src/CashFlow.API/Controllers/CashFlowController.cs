@@ -19,9 +19,9 @@ public class CashFlowsController : ControllerBase
         _mediator = mediator;
     }
 
-    [ProducesResponseType(typeof(RegisterNewCashFlowResponse),statusCode:(int)HttpStatusCode.Created)]
-    [ProducesResponseType(statusCode:(int)HttpStatusCode.BadRequest)]
-    [ProducesResponseType(statusCode:(int)HttpStatusCode.InternalServerError)]
+    [ProducesResponseType(typeof(RegisterNewCashFlowResponse), (int)HttpStatusCode.Created)]
+    [ProducesResponseType((int)HttpStatusCode.BadRequest)]
+    [ProducesResponseType((int)HttpStatusCode.InternalServerError)]
     [HttpPost]
     public async Task<IActionResult> RegisterNewCashFlow([FromBody] RegisterNewCashFlowRequest request)
     {
@@ -43,9 +43,9 @@ public class CashFlowsController : ControllerBase
         };
     }
 
-    [ProducesResponseType(typeof(TransactionResponse),statusCode:(int)HttpStatusCode.Created)]
-    [ProducesResponseType(statusCode:(int)HttpStatusCode.BadRequest)]
-    [ProducesResponseType(statusCode:(int)HttpStatusCode.InternalServerError)]
+    [ProducesResponseType(typeof(TransactionResponse), (int)HttpStatusCode.Created)]
+    [ProducesResponseType((int)HttpStatusCode.BadRequest)]
+    [ProducesResponseType((int)HttpStatusCode.InternalServerError)]
     [HttpPost("{cashflowId}/transactions")]
     public async Task<IActionResult> NewTransaction([FromRoute] Guid cashflowId,
         [FromBody] AddTransactionRequest request)
@@ -71,10 +71,10 @@ public class CashFlowsController : ControllerBase
         };
     }
 
-    [ProducesResponseType(typeof(TransactionResponse),statusCode:(int)HttpStatusCode.Accepted)]
-    [ProducesResponseType(statusCode:(int)HttpStatusCode.BadRequest)]
-    [ProducesResponseType(statusCode:(int)HttpStatusCode.NotFound)]
-    [ProducesResponseType(statusCode:(int)HttpStatusCode.InternalServerError)]
+    [ProducesResponseType(typeof(TransactionResponse), (int)HttpStatusCode.Accepted)]
+    [ProducesResponseType((int)HttpStatusCode.BadRequest)]
+    [ProducesResponseType((int)HttpStatusCode.NotFound)]
+    [ProducesResponseType((int)HttpStatusCode.InternalServerError)]
     [HttpPatch("/transactions/{transactionId}/cancel-reverse")]
     public async Task<IActionResult> CancelReverse([FromRoute] Guid transactionId)
     {
@@ -89,7 +89,7 @@ public class CashFlowsController : ControllerBase
                 TransactionId = transactionReversed
             });
 
-        return error.ErrorCode switch
+        return error!.ErrorCode switch
         {
             ErrorCode.CommandInvalid => BadRequest(error.Message),
             ErrorCode.TransactionNotFound => NotFound(error.Message),
@@ -97,10 +97,10 @@ public class CashFlowsController : ControllerBase
         };
     }
 
-    [ProducesResponseType(typeof(GetDailyBalanceQueryResponse),statusCode:(int)HttpStatusCode.OK)]
-    [ProducesResponseType(statusCode:(int)HttpStatusCode.BadRequest)]
-    [ProducesResponseType(statusCode:(int)HttpStatusCode.NotFound)]
-    [ProducesResponseType(statusCode:(int)HttpStatusCode.InternalServerError)]
+    [ProducesResponseType(typeof(GetDailyBalanceQueryResponse), (int)HttpStatusCode.OK)]
+    [ProducesResponseType((int)HttpStatusCode.BadRequest)]
+    [ProducesResponseType((int)HttpStatusCode.NotFound)]
+    [ProducesResponseType((int)HttpStatusCode.InternalServerError)]
     [HttpGet("{accountId}/daily")]
     public async Task<IActionResult> GetDailyBalance([FromRoute] Guid accountId)
     {
@@ -112,29 +112,30 @@ public class CashFlowsController : ControllerBase
         if (isSuccess)
             return StatusCode((int)HttpStatusCode.OK, response);
 
-        return error.ErrorCode switch
+        return error!.ErrorCode switch
         {
             ErrorCode.CommandInvalid => BadRequest(error.Message),
             ErrorCode.CashFlowNotFound => NotFound(error.Message),
             _ => StatusCode((int)HttpStatusCode.InternalServerError, error.Message)
         };
     }
-    
-    [ProducesResponseType(typeof(GetByAccountIdAndDateRangeQueryResponse),statusCode:(int)HttpStatusCode.OK)]
-    [ProducesResponseType(statusCode:(int)HttpStatusCode.BadRequest)]
-    [ProducesResponseType(statusCode:(int)HttpStatusCode.NotFound)]
-    [ProducesResponseType(statusCode:(int)HttpStatusCode.InternalServerError)]
+
+    [ProducesResponseType(typeof(GetByAccountIdAndDateRangeQueryResponse), (int)HttpStatusCode.OK)]
+    [ProducesResponseType((int)HttpStatusCode.BadRequest)]
+    [ProducesResponseType((int)HttpStatusCode.NotFound)]
+    [ProducesResponseType((int)HttpStatusCode.InternalServerError)]
     [HttpGet("{accountId}")]
-    public async Task<IActionResult> GetRangeDateBalance([FromRoute] Guid accountId,[FromQuery] GetByAccountIdAndDateRangeQuery query)
+    public async Task<IActionResult> GetRangeDateBalance([FromRoute] Guid accountId,
+        [FromQuery] GetByAccountIdAndDateRangeQuery query)
     {
         query.AccountId = accountId;
-        
+
         var (isSuccess, response, error) = await _mediator.Send(query);
 
         if (isSuccess)
             return StatusCode((int)HttpStatusCode.OK, response);
 
-        return error.ErrorCode switch
+        return error!.ErrorCode switch
         {
             ErrorCode.CommandInvalid => BadRequest(error.Message),
             ErrorCode.CashFlowNotFound => NotFound(error.Message),
