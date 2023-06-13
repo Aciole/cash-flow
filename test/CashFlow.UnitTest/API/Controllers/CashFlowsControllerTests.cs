@@ -98,6 +98,13 @@ public class CashFlowsControllerTests
         var response = (ObjectResult)await _controller.GetDailyBalance(cashFlowId);
 
         // Assert
+
+        if (response.StatusCode == (int)HttpStatusCode.OK)
+        {
+            var content = (GetDailyBalanceQueryResponse)response.Value!;
+            Assert.NotEqual(default(Guid), content.AccountId);
+            Assert.NotEqual(default(DateOnly), content.Date);
+        }
         Assert.Equal(statusCode, response.StatusCode);
     }
 

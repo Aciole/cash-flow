@@ -41,7 +41,9 @@ public class GetByAccountIdAndDateRangeUseCaseTests : FixtureUseCase<GetByAccoun
         Assert.True(isSuccess);
         Assert.NotNull(response);
         Assert.Null(error);
-
+        Assert.NotNull(response.Content);
+        Assert.NotNull(response.TotalItems);
+        Assert.NotNull(response.TotalPages);
 
         LoggerVerify(LogLevel.Information, "Account Id:");
     }

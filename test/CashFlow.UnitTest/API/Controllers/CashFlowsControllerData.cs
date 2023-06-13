@@ -35,7 +35,9 @@ internal class RetrieveCashFlowQueryTestData : IEnumerable<object[]>
             CommandResponse<GetDailyBalanceQueryResponse>.CreateSuccess(new GetDailyBalanceQueryResponse
             {
                 Transactions = new List<Transaction>(),
-                CurrentBalance = 100M
+                CurrentBalance = 100M,
+                AccountId = Guid.NewGuid(),
+                Date = DateOnly.FromDateTime(DateTime.UtcNow.Date)
             }),
             (int)HttpStatusCode.OK
         };
